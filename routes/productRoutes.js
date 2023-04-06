@@ -33,7 +33,32 @@ router.get("/products/new", async(req,res)=>{
 
  })
 
+ router.post("/products/user/cart",(req, res) => {
+   const productId = req.body.productId;
+   let cart = req.session.cart || {};
+   cart[productId] = (cart[productId] || 0) + 1;
+   req.session.cart = cart;
+   res.redirect('/products/user/cart');
+ })
 
+router.get("/products/user/cart",async (req, res) => {
+   const cart = req.session.cart || {};
+  const productIds = Object.keys(cart);
+  const products = await Product.find({ _id: { $in: productIds } });
+  const cartItems = products.map(product => {
+    const quantity = cart[product._id];
+    const name = product.name;
+    const price = product.price * quantity;
+    const img = product.img;
+    const desc = product.desc;
+    const id = product._id;
+    return { product, quantity, price, img, desc, name, id};
+  });
+  const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
+
+  // Render the cart page with the list of items in the cart and the total price
+  res.render('products/cart', { cartItems, totalPrice });
+})
  //show a single product
  router.get("/products/:productid", isLoggedIn ,  async(req,res)=>{
 

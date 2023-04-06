@@ -14,14 +14,17 @@
                 <h5 class="card-title">$<%=product.price%> </h5>
             
                 <a href="/products/<%=product._id%>/edit" class="btn btn-sm btn-secondary">Update</a>
-
+                <form action="/products/user/cart" method="post">
+                  <input type="hidden" name = "productId" value = "<%=product._id%>">
+                  <button type = "submit" class = "btn btn-sm btn-success">Add to cart</button>
+                </form>
                <form action="/products/<%=product._id%>?_method=DELETE" method="post" class="d-inline">
                   <button class="btn btn-sm btn-danger">Delete</button>
                </form>
         
           </div>
-          </div>
-          </div>
+        </div>
+      </div>
      
 
       <div style="width:50%;" >
