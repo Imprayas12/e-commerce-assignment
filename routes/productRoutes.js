@@ -4,7 +4,6 @@ const Product = require("../models/Product");
 const Review = require("../models/Review");
 const {isLoggedIn} = require("../middleware")
 
-
 // get all products
 router.get("/products", async(req,res)=>{
    const products =  await Product.find({});
@@ -13,7 +12,7 @@ router.get("/products", async(req,res)=>{
 
 
 // get forms to create a new product
-router.get("/products/new", async(req,res)=>{
+router.get("/products/new", isLoggedIn, async(req,res)=>{
 
      res.render("./products/new")
  
@@ -59,6 +58,11 @@ router.get("/products/user/cart",async (req, res) => {
   // Render the cart page with the list of items in the cart and the total price
   res.render('products/cart', { cartItems, totalPrice });
 })
+
+router.get('/checkout',(req, res) => {
+   req.session.cart = {};
+   res.send('order placed successfully');
+})
  //show a single product
  router.get("/products/:productid", isLoggedIn ,  async(req,res)=>{
 
@@ -70,7 +74,17 @@ router.get("/products/user/cart",async (req, res) => {
         res.render("./products/show", {product})
   
  })
-
+ router.delete('/cart/:productId', (req, res) => {
+   // Retrieve the product ID from the request parameters
+   const productId = req.params.productId;
+   // Retrieve the cart data from the session
+   const cart = req.session.cart || {};
+   // Delete the item with the specified product ID from the cart
+   delete cart[productId];
+   // Update the cart data in the session
+   req.session.cart = cart;
+   res.redirect('/products/user/cart')
+ });
 
  // get the edit form
  router.get("/products/:productid/edit" ,isLoggedIn, async(req, res)=>{

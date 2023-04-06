@@ -1,5 +1,7 @@
+<% layout('./layout/boilerplate') -%>
+<h1 style="margin-left: 85px;margin-top:20px"> Items in your Cart </h1>
+<div class="cartItems" style="display: flex;">
 <% for( let cartItem of cartItems ) { %>
-    <h1 style="margin-left: 85px;margin-top:20px">  <%= cartItem.name %> </h1>
 <div class="card mx-auto mb-3" style="width: 23rem;margin-top:30px">
     <img src="<%=cartItem.img%>" class="card-img-top" alt="<%=cartItem.name%> ">
     <div class="card-body">
@@ -7,11 +9,20 @@
       <p class="card-text"><%=cartItem.desc%></p>
       <h5 class="card-title"><%=cartItem.price%> </h5>
       <h4 class = "card-title"><%=cartItem.name%></h4>
-     <form action="/products/user/cart/<%=cartItem._id%>?_method=DELETE" method="post" class="d-inline">
+      <h5 class="card-title">Quantity: <%=cartItem.quantity%> </h5>
+     <form action="/cart/<%=cartItem._id%>?_method=DELETE" method="post" class="d-inline">
         <button class="btn btn-sm btn-danger">Delete</button>
      </form>
+    </div>
+</div>
+     <% } %>
 </div>
 </div>
+<div class="total-amount">
+    <h1>Total Amount: <%= totalPrice %></h1>
 </div>
-<% } %>
+<form action="/checkout" method = "get">
+    <button class = "btn btn-success" type="submit">Checkout</button>
+</form>
+
 

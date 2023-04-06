@@ -18,7 +18,7 @@
          
         <% if(currentUser){ %>
           <li class="nav-item">
-            <i class="fa-solid fa-cart-shopping"></i>
+            <a href="/products/user/cart" style="color: white;"><i class="fa-solid fa-cart-shopping"></i></a>
            </li>
           <li class="nav-item">
             <a class="nav-link text-capitalize" href="#">Hi, <%=currentUser.username%>! </a>
